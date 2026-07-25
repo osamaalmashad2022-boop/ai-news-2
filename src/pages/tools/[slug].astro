@@ -1,0 +1,99 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const toolEntries = await getCollection('tools');
+  return toolEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'tools'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { name, description, category, url, pricing, tags, logo } = entry.data;
+
+const pricingMap = {
+  free: { label: 'مجاني 100%', style: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' },
+  freemium: { label: 'مجاني مع خيارات مدفوعة', style: 'bg-amber-500/10 text-amber-400 border-amber-500/30' },
+  paid: { label: 'مدفوع', style: 'bg-rose-500/10 text-rose-400 border-rose-500/30' },
+};
+
+const currentPricing = pricingMap[pricing];
+---
+
+<BaseLayout title={`${name} - دليل أدوات الذكاء الاصطناعي`} description={description}>
+  <article class="max-w-3xl mx-auto space-y-8 py-4">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 text-xs text-gray-400">
+      <a href="/" class="hover:text-neon-cyan transition-colors">الرئيسية</a>
+      <span>/</span>
+      <a href="/tools" class="hover:text-neon-cyan transition-colors">الأدوات</a>
+      <span>/</span>
+      <span class="text-neon-cyan font-medium">{name}</span>
+    </nav>
+
+    <!-- Header Card -->
+    <div class="glass-card p-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          {logo ? (
+            <img src={logo} alt={name} class="w-16 h-16 rounded-2xl bg-dark-surface p-2 border border-dark-border" />
+          ) : (
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-blue to-neon-purple p-[1px]">
+              <div class="w-full h-full bg-dark-surface rounded-[15px] flex items-center justify-center text-neon-cyan text-2xl font-bold font-heading">
+                {name.charAt(0)}
+              </div>
+            </div>
+          )}
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-bold font-heading text-white">{name}</h1>
+            <span class="text-xs text-gray-400">{category}</span>
+          </div>
+        </div>
+
+        <span class={`inline-block self-start sm:self-center text-xs font-semibold px-3 py-1 rounded-full border ${currentPricing.style}`}>
+          {currentPricing.label}
+        </span>
+      </div>
+
+      <p class="text-gray-200 text-base leading-relaxed">
+        {description}
+      </p>
+
+      <div class="pt-4 border-t border-dark-border/40 flex flex-wrap items-center justify-between gap-4">
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-6 py-3 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-black font-bold text-sm hover:opacity-95 shadow-md shadow-neon-cyan/20 transition-all inline-flex items-center gap-2"
+        >
+          <span>زيارة الأداة الرسمية</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+
+        {tags.length > 0 && (
+          <div class="flex items-center gap-1.5 flex-wrap">
+            {tags.map((tag) => (
+              <span class="text-xs px-2.5 py-1 rounded-lg bg-dark-surface text-gray-400 border border-dark-border/60">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Article Content -->
+    <div class="prose prose-invert max-w-none text-gray-200 leading-relaxed space-y-4 pt-4">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,84 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+  structuredData?: string;
+}
+
+const {
+  title = 'نبض الذكاء - أخبار ودليل الذكاء الاصطناعي اليومي',
+  description = 'موقع إخباري متخصص في أخبار الذكاء الاصطناعي والأدوات الجديدة، ملخصة باحترافية يومياً من مصادر عالمية موثوقة.',
+  image = '/og-image.jpg',
+  article = false,
+  structuredData,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// Analytics — set PUBLIC_ANALYTICS_URL and PUBLIC_ANALYTICS_SITE_ID in your environment
+// to enable privacy-respecting, cookieless analytics (Plausible or Umami).
+// Example (Plausible):  PUBLIC_ANALYTICS_URL=https://plausible.io/js/script.js
+//                       PUBLIC_ANALYTICS_SITE_ID=yournewsdomain.com
+// Example (Umami):      PUBLIC_ANALYTICS_URL=https://umami.yourhost.com/script.js
+//                       PUBLIC_ANALYTICS_SITE_ID=your-umami-website-id
+const analyticsUrl = import.meta.env.PUBLIC_ANALYTICS_URL;
+const analyticsSiteId = import.meta.env.PUBLIC_ANALYTICS_SITE_ID;
+---
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+    <!-- JSON-LD Structured Data -->
+    {structuredData && <script type="application/ld+json" set:html={structuredData} />}
+
+    <!-- Analytics (cookieless, no consent banner required) -->
+    {analyticsUrl && analyticsSiteId && (
+      <script defer src={analyticsUrl} data-domain={analyticsSiteId} data-website-id={analyticsSiteId} />
+    )}
+
+    <!-- RSS Feed link -->
+    <link rel="alternate" type="application/rss+xml" title="نبض الذكاء RSS Feed" href="/rss.xml" />
+
+    <!-- View Transitions -->
+    <ClientRouter />
+  </head>
+  <body class="bg-dark-bg text-gray-200 min-h-screen flex flex-col selection:bg-neon-cyan selection:text-black">
+    <Header />
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

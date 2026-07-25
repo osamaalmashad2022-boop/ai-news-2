@@ -1,0 +1,67 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-dark-border/60 bg-dark-surface/40 mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Col 1: About -->
+      <div class="md:col-span-2 space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-neon-blue to-neon-cyan p-[1px]">
+            <div class="w-full h-full bg-dark-bg rounded-[7px] flex items-center justify-center">
+              <svg class="w-4 h-4 text-neon-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+          </div>
+          <span class="text-lg font-bold font-heading gradient-text">نبض الذكاء</span>
+        </div>
+        <p class="text-gray-400 text-sm leading-relaxed max-w-md">
+          منصة إخبارية يومية متخصصة في الذكاء الاصطناعي، توفر ملخصات دقيقة وموثوقة باللغة العربية لأحدث الابتكارات والنماذج والأدوات مجاناً بالكامل.
+        </p>
+        <div class="flex items-center gap-4 text-xs text-gray-500">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            يتحدث يومياً تلقائياً
+          </span>
+          <span>•</span>
+          <span>مجاني 100% بدون إعلانات</span>
+        </div>
+      </div>
+
+      <!-- Col 2: Quick Links -->
+      <div class="space-y-3">
+        <h4 class="text-white font-semibold font-heading text-sm">روابط سريعة</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="/news" class="hover:text-neon-cyan transition-colors">أحدث الأخبار</a></li>
+          <li><a href="/tools" class="hover:text-neon-cyan transition-colors">دليل الأدوات</a></li>
+          <li><a href="/search" class="hover:text-neon-cyan transition-colors">البحث الفوري</a></li>
+          <li><a href="/about" class="hover:text-neon-cyan transition-colors">عن المنصة</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Feeds & Subscription -->
+      <div class="space-y-3">
+        <h4 class="text-white font-semibold font-heading text-sm">خلاصات واشتراك</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li>
+            <a href="/rss.xml" class="inline-flex items-center gap-2 hover:text-neon-amber transition-colors">
+              <svg class="w-4 h-4 text-neon-amber" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"/>
+              </svg>
+              خلاصة RSS الفورية
+            </a>
+          </li>
+          <li><a href="#newsletter" class="hover:text-neon-cyan transition-colors">النشرة البريدية اليومية</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="border-t border-dark-border/40 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+      <p>© {currentYear} نبض الذكاء AI. جميع الحقوق محفوظة.</p>
+      <p class="text-gray-400">تم البناء بواسطة Astro 5 و Tailwind CSS & Gemini 2.5 Flash</p>
+    </div>
+  </div>
+</footer>

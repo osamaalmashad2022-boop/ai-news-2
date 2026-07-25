@@ -1,0 +1,40 @@
+---
+interface Props {
+  activeCategory?: string;
+}
+
+const { activeCategory = 'الكل' } = Astro.props;
+
+const categories = [
+  'الكل',
+  'نماذج لغوية',
+  'توليد الصور والفيديو',
+  'الصوت',
+  'البرمجة',
+  'الأبحاث',
+  'الأعمال والتمويل',
+  'السياسات والأخلاقيات',
+  'أدوات وتطبيقات'
+];
+---
+
+<div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar py-4">
+  {categories.map((category) => {
+    const isAll = category === 'الكل';
+    const isActive = activeCategory === category;
+    const href = isAll ? '/news' : `/category/${encodeURIComponent(category)}`;
+
+    return (
+      <a
+        href={href}
+        class={`whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
+          isActive
+            ? 'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40 shadow-sm shadow-neon-cyan/10'
+            : 'bg-dark-card/60 text-gray-400 hover:text-white border border-dark-border/60 hover:bg-dark-hover'
+        }`}
+      >
+        {category}
+      </a>
+    );
+  })}
+</div>

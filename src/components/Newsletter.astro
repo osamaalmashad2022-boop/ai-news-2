@@ -1,0 +1,62 @@
+---
+---
+
+<section id="newsletter" class="relative my-16 rounded-3xl overflow-hidden glass-card border border-neon-cyan/30 p-8 sm:p-12 text-center">
+  <!-- Glowing accent background -->
+  <div class="absolute inset-0 bg-gradient-to-r from-neon-blue/10 via-neon-cyan/5 to-neon-purple/10 pointer-events-none"></div>
+
+  <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+    <div class="inline-flex p-3 rounded-2xl bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan mb-2">
+      <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    </div>
+
+    <h2 class="text-2xl sm:text-4xl font-bold font-heading text-white">
+      اشترك في النشرة البريدية اليومية
+    </h2>
+
+    <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+      احصل على ملخص شامل لأهم أخبار وتطبيقات الذكاء الاصطناعي في بريدك الإلكتروني كل صباح، بدون إعلانات وبشكل مجاني تماماً.
+    </p>
+
+    <!-- Embedded Buttondown Form (RSS to Email Compatible) -->
+    <form
+      action="https://buttondown.com/api/emails/embed-subscribe/ainews-arabic"
+      method="post"
+      target="popupwindow"
+      on-submit="window.open('https://buttondown.com/ainews-arabic', 'popupwindow')"
+      class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto pt-2"
+    >
+      <input
+        type="email"
+        name="email"
+        placeholder="أدخل بريدك الإلكتروني..."
+        required
+        class="flex-grow px-5 py-3.5 rounded-xl bg-dark-surface/90 border border-dark-border text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan transition-colors text-sm"
+      />
+      <button
+        type="submit"
+        class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue text-black font-bold text-sm hover:opacity-95 shadow-lg shadow-neon-cyan/20 transition-all flex-shrink-0"
+      >
+        اشترك مجاناً
+      </button>
+    </form>
+
+    <div class="flex items-center justify-center gap-4 text-xs text-gray-400 pt-2">
+      <span class="flex items-center gap-1">
+        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        إلغاء الاشتراك في أي وقت
+      </span>
+      <span>•</span>
+      <span class="flex items-center gap-1">
+        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        خصوصيتك محمية 100%
+      </span>
+    </div>
+  </div>
+</section>

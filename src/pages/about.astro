@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="عن المنصة - نبض الذكاء AI" description="تعرف على منصة نبض الذكاء وكيف نضمن نقل الأخبار بدقة وحيادية وبدون هلوسة مجاناً 100%">
+  <div class="max-w-3xl mx-auto space-y-10 py-6">
+    <!-- Header -->
+    <div class="space-y-4 text-center">
+      <h1 class="text-4xl sm:text-5xl font-extrabold font-heading text-white">
+        عن منصة <span class="gradient-text">نبض الذكاء</span>
+      </h1>
+      <p class="text-gray-300 text-base sm:text-lg leading-relaxed">
+        منصة إخبارية تقنية عربية مبنية وفق خط إنتاج متكامل يضمن السرعة والدقة والمصداقية التامة، مجاناً 100% وبدون إعلانات.
+      </p>
+    </div>
+
+    <!-- How it works -->
+    <div class="glass-card p-8 space-y-6">
+      <h2 class="text-2xl font-bold font-heading text-white flex items-center gap-2">
+        <span class="w-2 h-6 rounded-full bg-neon-cyan"></span>
+        آلية العمل: من المصدر إلى المكتوب
+      </h2>
+
+      <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+        نؤمن في "نبض الذكاء" بأن الخبر الصحفي يجب أن يستند دائماً إلى مصدره الأصلي الحقيقي لتفادي الظاهرة المعروفة بـ "الهلوسة" في نماذج الذكاء الاصطناعي. لذلك نعتمد الآلية التالية:
+      </p>
+
+      <div class="grid grid-cols-1 gap-4 pt-2">
+        <div class="p-4 rounded-xl bg-dark-surface border border-dark-border/60 flex items-start gap-4">
+          <div class="w-8 h-8 rounded-lg bg-neon-blue/20 text-neon-blue font-bold flex items-center justify-center flex-shrink-0">
+            1
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-base">مصادر RSS الموثوقة (مصدر الحقيقة)</h3>
+            <p class="text-xs sm:text-sm text-gray-400 mt-1">نقرأ الخلاصات الرسمية المباشرة من كبرى الشركات والمختبرات التقنية (مثل OpenAI, Google DeepMind, MIT Tech Review, TechCrunch...).</p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-dark-surface border border-dark-border/60 flex items-start gap-4">
+          <div class="w-8 h-8 rounded-lg bg-neon-cyan/20 text-neon-cyan font-bold flex items-center justify-center flex-shrink-0">
+            2
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-base">التلخيص الذكي الصارم (Gemini 2.5 Flash)</h3>
+            <p class="text-xs sm:text-sm text-gray-400 mt-1">يُكلف النموذج بتلخيص وتنسيق الخبر باللغة العربية بدقة وموضوعية دون التعديل في الحقائق أو التخمين، مع تحديد التصنيف والوسوم والأهمية.</p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-dark-surface border border-dark-border/60 flex items-start gap-4">
+          <div class="w-8 h-8 rounded-lg bg-neon-purple/20 text-neon-purple font-bold flex items-center justify-center flex-shrink-0">
+            3
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-base">التوليد الثابت والنشر الآلي</h3>
+            <p class="text-xs sm:text-sm text-gray-400 mt-1">تُحفظ الأخبار كملفات Markdown ويقوم إطار Astro ببناء الموقع ونشره تلقائياً صباح كل يوم عبر بيئة GitHub Actions و Vercel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Principles -->
+    <div class="glass-card p-8 space-y-4">
+      <h2 class="text-xl font-bold font-heading text-white">مبادئنا الأساسية</h2>
+      <ul class="space-y-3 text-sm text-gray-300">
+        <li class="flex items-start gap-2">
+          <span class="text-emerald-400 font-bold">✓</span>
+          <span><strong>الإسناد الواجب:</strong> كل خبر يحتوي على رابط المصدر الأصلي والجهة المعلنة بشكل واضح وصريح.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="text-emerald-400 font-bold">✓</span>
+          <span><strong>بدون تكلفة أو اشتراك مدفوع:</strong> كل محتويات الموقع والنشرة البريدية والدليل متاحة مجاناً للجميع.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="text-emerald-400 font-bold">✓</span>
+          <span><strong>سرعة وسلاسة خرافية:</strong> موقع ثابت (Static) بالكامل بدون خوادم بطيئة، مع بحث فوري ووضع داكن مريح للعين.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

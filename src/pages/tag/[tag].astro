@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+
+export async function getStaticPaths() {
+  const allNews = await getCollection('news');
+  const allTools = await getCollection('tools');
+
+  const newsTags = allNews.flatMap((n) => n.data.tags || []);
+  const toolTags = allTools.flatMap((t) => t.data.tags || []);
+  const uniqueTags = Array.from(new Set([...newsTags, ...toolTags]));
+
+  return uniqueTags.map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const allNews = await getCollection('news');
+const filteredNews = allNews
+  .filter((item) => item.data.tags?.includes(tag))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+---
+
+<BaseLayout title={`وسم: #${tag} - نبض الذكاء AI`}>
+  <div class="space-y-8 max-w-7xl mx-auto">
+    <div class="border-b border-dark-border/60 pb-6 space-y-2">
+      <span class="text-xs font-semibold px-3 py-1 rounded-full bg-neon-purple/10 text-neon-purple border border-neon-purple/30">
+        الوسوم
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold font-heading text-white">
+        #{tag}
+      </h1>
+    </div>
+
+    {filteredNews.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredNews.map((newsItem) => (
+          <NewsCard news={newsItem} />
+        ))}
+      </div>
+    ) : (
+      <div class="glass-card p-12 text-center text-gray-400">
+        لا توجد عناصر مرتبطة بهذا الوسم حالياً.
+      </div>
+    )}
+  </div>
+</BaseLayout>

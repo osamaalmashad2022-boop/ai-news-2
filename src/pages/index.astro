@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import NewsCard from '../components/NewsCard.astro';
+import ToolCard from '../components/ToolCard.astro';
+import CategoryFilter from '../components/CategoryFilter.astro';
+import Newsletter from '../components/Newsletter.astro';
+
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+const latestNews = sortedNews.slice(0, 6);
+
+const allTools = await getCollection('tools');
+const sortedTools = allTools.sort((a, b) => b.data.addedAt.getTime() - a.data.addedAt.getTime());
+const featuredTools = sortedTools.slice(0, 3);
+
+// WebSite JSON-LD
+const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : '';
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'نبض الذكاء',
+  url: Astro.site?.href ?? '/',
+  description: 'موقع إخباري متخصص في أخبار الذكاء الاصطناعي والأدوات الجديدة، ملخصة باحترافية يومياً من مصادر عالمية موثوقة.',
+  inLanguage: 'ar',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${siteUrl}/search?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<BaseLayout title="نبض الذكاء - الأخبار اليومية ودليل أدوات الذكاء الاصطناعي" structuredData={JSON.stringify(websiteSchema)}>
+  <!-- Hero Section -->
+  <Hero />
+
+  <!-- Latest News Section -->
+  <section class="space-y-6 my-12">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-dark-border/60 pb-4">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-bold font-heading text-white flex items-center gap-2">
+          <span class="w-2.5 h-7 rounded-full bg-neon-cyan inline-block"></span>
+          أبرز أخبار اليوم
+        </h2>
+        <p class="text-gray-400 text-sm mt-1">ملخصة وموثقة باللغة العربية مع روابط المصادر الرسمية</p>
+      </div>
+
+      <a href="/news" class="inline-flex items-center gap-1.5 text-neon-cyan hover:underline text-sm font-semibold">
+        <span>عرض كل الأخبار</span>
+        <svg class="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+
+    <!-- Category Filter -->
+    <CategoryFilter />
+
+    <!-- News Grid -->
+    {latestNews.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
+        {latestNews.map((newsItem, index) => (
+          <NewsCard news={newsItem} featured={index === 0} />
+        ))}
+      </div>
+    ) : (
+      <div class="glass-card p-12 text-center text-gray-400">
+        جاري جلب وتلخيص أحدث أخبار اليوم...
+      </div>
+    )}
+  </section>
+
+  <!-- Featured Tools Section -->
+  <section class="space-y-6 my-16">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-dark-border/60 pb-4">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-bold font-heading text-white flex items-center gap-2">
+          <span class="w-2.5 h-7 rounded-full bg-neon-purple inline-block"></span>
+          دليل أدوات الذكاء الاصطناعي
+        </h2>
+        <p class="text-gray-400 text-sm mt-1">تطبيقات وأدوات جديدة تم رصدها وإضافتها حديثاً</p>
+      </div>
+
+      <a href="/tools" class="inline-flex items-center gap-1.5 text-neon-purple hover:underline text-sm font-semibold">
+        <span>استكشف كافة الأدوات</span>
+        <svg class="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+      {featuredTools.map((tool) => (
+        <ToolCard tool={tool} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <Newsletter />
+</BaseLayout>

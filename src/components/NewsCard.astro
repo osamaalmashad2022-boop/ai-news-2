@@ -1,0 +1,94 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  news: CollectionEntry<'news'>;
+  featured?: boolean;
+}
+
+const { news, featured = false } = Astro.props;
+const { title, summary, category, sourceName, publishedAt, image } = news.data;
+
+const formattedDate = new Intl.DateTimeFormat('ar-EG', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(new Date(publishedAt));
+
+const categoryColors: Record<string, string> = {
+  'نماذج لغوية': 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+  'توليد الصور والفيديو': 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+  'الصوت': 'bg-pink-500/10 text-pink-400 border-pink-500/30',
+  'البرمجة': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+  'الأبحاث': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
+  'الأعمال والتمويل': 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+  'السياسات والأخلاقيات': 'bg-rose-500/10 text-rose-400 border-rose-500/30',
+  'أدوات وتطبيقات': 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30',
+};
+
+const badgeStyle = categoryColors[category] || 'bg-gray-500/10 text-gray-400 border-gray-500/30';
+---
+
+<article class={`glass-card overflow-hidden flex flex-col group ${featured ? 'md:col-span-2 border-neon-cyan/30' : ''}`}>
+  {image && (
+    <div class="relative h-48 sm:h-56 overflow-hidden">
+      <img
+        src={image}
+        alt={title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-dark-card via-dark-card/20 to-transparent"></div>
+      
+      <!-- Category Badge on Image -->
+      <a
+        href={`/category/${encodeURIComponent(category)}`}
+        class={`absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full border backdrop-blur-md transition-all ${badgeStyle}`}
+      >
+        {category}
+      </a>
+    </div>
+  )}
+
+  <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+    <div class="space-y-3">
+      {!image && (
+        <div class="flex items-center justify-between">
+          <a
+            href={`/category/${encodeURIComponent(category)}`}
+            class={`text-xs font-semibold px-3 py-1 rounded-full border ${badgeStyle}`}
+          >
+            {category}
+          </a>
+          <span class="text-xs text-gray-400">{formattedDate}</span>
+        </div>
+      )}
+
+      <h3 class={`font-heading font-bold text-white group-hover:text-neon-cyan transition-colors leading-snug ${featured ? 'text-xl sm:text-2xl' : 'text-lg'}`}>
+        <a href={`/news/${news.slug}`}>
+          {title}
+        </a>
+      </h3>
+
+      <p class="text-gray-300 text-sm line-clamp-3 leading-relaxed">
+        {summary}
+      </p>
+    </div>
+
+    <div class="pt-4 border-t border-dark-border/40 flex items-center justify-between text-xs text-gray-400">
+      <span class="flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-neon-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
+        المصدر: <strong class="text-gray-300 font-medium">{sourceName}</strong>
+      </span>
+
+      <a href={`/news/${news.slug}`} class="inline-flex items-center gap-1 text-neon-cyan hover:underline font-medium">
+        <span>قراءة المزيد</span>
+        <svg class="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</article>

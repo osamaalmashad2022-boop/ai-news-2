@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import CategoryFilter from '../../components/CategoryFilter.astro';
+
+export async function getStaticPaths() {
+  const categories = [
+    'نماذج لغوية',
+    'توليد الصور والفيديو',
+    'الصوت',
+    'البرمجة',
+    'الأبحاث',
+    'الأعمال والتمويل',
+    'السياسات والأخلاقيات',
+    'أدوات وتطبيقات'
+  ];
+
+  return categories.map((cat) => ({
+    params: { category: cat },
+    props: { category: cat },
+  }));
+}
+
+const { category } = Astro.props;
+const allNews = await getCollection('news');
+const filteredNews = allNews
+  .filter((item) => item.data.category === category)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+---
+
+<BaseLayout title={`تصنيف: ${category} - نبض الذكاء AI`} description={`أحدث أخبار ومستجدات ${category} ملخصة باللغة العربية`}>
+  <div class="space-y-8">
+    <div class="border-b border-dark-border/60 pb-6 space-y-2">
+      <div class="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30">
+        تصنيف الأخبار
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold font-heading text-white">
+        {category}
+      </h1>
+    </div>
+
+    <!-- Category Filter Bar -->
+    <CategoryFilter activeCategory={category} />
+
+    <!-- Grid -->
+    {filteredNews.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+        {filteredNews.map((newsItem) => (
+          <NewsCard news={newsItem} />
+        ))}
+      </div>
+    ) : (
+      <div class="glass-card p-12 text-center text-gray-400">
+        لا توجد أخبار حالياً تحت تصنيف "{category}".
+      </div>
+    )}
+  </div>
+</BaseLayout>

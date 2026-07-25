@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Search from 'astro-pagefind/components/Search';
+---
+
+<BaseLayout title="البحث الفوري - نبض الذكاء AI" description="ابحث في كامل أرشيف الأخبار ودليل أدوات الذكاء الاصطناعي">
+  <div class="max-w-4xl mx-auto space-y-8 py-4">
+    <div class="border-b border-dark-border/60 pb-6 space-y-2 text-center">
+      <h1 class="text-3xl sm:text-4xl font-extrabold font-heading text-white">
+        البحث الفوري الشامل
+      </h1>
+      <p class="text-gray-400 text-sm sm:text-base">
+        ابحث في الأخبار والملخصات ودليل الأدوات فورياً بدون أي تأخير
+      </p>
+    </div>
+
+    <!-- Pagefind UI Component -->
+    <div class="glass-card p-6 sm:p-8 min-h-[300px]">
+      <Search
+        id="search"
+        className="pagefind-ui"
+        uiOptions={{
+          showImages: true,
+          showSubResults: true,
+          resetFilters: false,
+          translations: {
+            placeholder: "ابحث عن خبر، أداة، أو تقنية...",
+            clear_search: "مسح",
+            load_more: "تحميل المزيد من النتائج",
+            search_label: "البحث في الموقع",
+            filters_label: "التصفية",
+            zero_results: "لم يتم العثور على نتائج تطابق: [SEARCH_TERM]",
+            many_results: "تم العثور على [COUNT] نتيجة لـ [SEARCH_TERM]",
+            one_result: "تم العثور على نتيجة واحدة لـ [SEARCH_TERM]",
+            alt_search: "لا توجد نتائج لـ [SEARCH_TERM]. عرض النتائج لـ [OTHER_TERM] بدلاً من ذلك",
+            search_suggestion: "لا توجد نتائج لـ [SEARCH_TERM]. جرب أحد التلميحات التالية:",
+            searching: "جاري البحث عن [SEARCH_TERM]..."
+          }
+        }}
+      />
+    </div>
+  </div>
+</BaseLayout>
