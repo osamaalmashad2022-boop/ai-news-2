@@ -4,9 +4,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import CategoryFilter from '../../components/CategoryFilter.astro';
 
-const PAGE_SIZE = 18;
-
 export async function getStaticPaths() {
+  const PAGE_SIZE = 18;
   const allNews = await getCollection('news');
   const sortedNews = allNews.sort(
     (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
