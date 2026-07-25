@@ -4,19 +4,33 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import CategoryFilter from '../../components/CategoryFilter.astro';
 
-export async function getStaticPaths({ paginate }: { paginate: Function }) {
+const PAGE_SIZE = 18;
+
+export async function getStaticPaths() {
   const allNews = await getCollection('news');
   const sortedNews = allNews.sort(
     (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
   );
-  return paginate(sortedNews, { pageSize: 18 });
+  const totalPages = Math.ceil(sortedNews.length / PAGE_SIZE);
+
+  // Generate paths for pages 2, 3, 4 … (page 1 is handled by index.astro)
+  return Array.from({ length: totalPages - 1 }, (_, i) => ({
+    params: { page: String(i + 2) },
+    props: {
+      pageData: sortedNews.slice((i + 1) * PAGE_SIZE, (i + 2) * PAGE_SIZE),
+      currentPage: i + 2,
+      totalPages,
+      prevUrl: i + 2 === 2 ? '/news' : `/news/${i + 1}`,
+      nextUrl: i + 2 < totalPages ? `/news/${i + 3}` : null,
+    },
+  }));
 }
 
-const { page } = Astro.props;
+const { pageData, currentPage, totalPages, prevUrl, nextUrl } = Astro.props;
 ---
 
 <BaseLayout
-  title="الأخبار اليومية - نبض الذكاء AI"
+  title={`الأخبار اليومية - الصفحة ${currentPage} - نبض الذكاء AI`}
   description="الأرشيف الكامل لأخبار وتطورات الذكاء الاصطناعي اليومية ملخصة بالعربية"
 >
   <div class="space-y-8">
@@ -34,19 +48,19 @@ const { page } = Astro.props;
 
     <!-- News Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
-      {page.data.map((newsItem: any, index: number) => (
-        <NewsCard news={newsItem} featured={page.currentPage === 1 && index === 0} />
+      {pageData.map((newsItem: any) => (
+        <NewsCard news={newsItem} />
       ))}
     </div>
 
     <!-- Pagination Controls -->
-    {page.lastPage > 1 && (
+    {totalPages > 1 && (
       <nav aria-label="تصفح الصفحات" class="glass-card flex items-center justify-between gap-4 px-6 py-4 rounded-2xl border border-dark-border/60">
         <!-- Next link (visually on the left in RTL) -->
         <div class="flex-1 flex justify-start">
-          {page.url.next ? (
+          {nextUrl ? (
             <a
-              href={page.url.next}
+              href={nextUrl}
               class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-dark-card/60 text-gray-300 border border-dark-border/60 hover:text-neon-cyan hover:border-neon-cyan/40 hover:bg-neon-cyan/10 transition-all duration-200"
             >
               <span>&#8592;</span>
@@ -61,14 +75,14 @@ const { page } = Astro.props;
 
         <!-- Page X of Y -->
         <div class="text-sm font-semibold text-gray-400 whitespace-nowrap">
-          الصفحة {page.currentPage} من {page.lastPage}
+          الصفحة {currentPage} من {totalPages}
         </div>
 
         <!-- Prev link (visually on the right in RTL) -->
         <div class="flex-1 flex justify-end">
-          {page.url.prev ? (
+          {prevUrl ? (
             <a
-              href={page.url.prev}
+              href={prevUrl}
               class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-dark-card/60 text-gray-300 border border-dark-border/60 hover:text-neon-cyan hover:border-neon-cyan/40 hover:bg-neon-cyan/10 transition-all duration-200"
             >
               <span>السابق</span>

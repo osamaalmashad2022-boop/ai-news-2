@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import CategoryFilter from '../../components/CategoryFilter.astro';
+
+const PAGE_SIZE = 18;
+
+const allNews = await getCollection('news');
+const sortedNews = allNews.sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+
+const totalPages = Math.ceil(sortedNews.length / PAGE_SIZE);
+const pageData = sortedNews.slice(0, PAGE_SIZE);
+const nextUrl = totalPages > 1 ? '/news/2' : null;
+---
+
+<BaseLayout
+  title="الأخبار اليومية - نبض الذكاء AI"
+  description="الأرشيف الكامل لأخبار وتطورات الذكاء الاصطناعي اليومية ملخصة بالعربية"
+>
+  <div class="space-y-8">
+    <div class="border-b border-dark-border/60 pb-6 space-y-2">
+      <h1 class="text-3xl sm:text-4xl font-extrabold font-heading text-white">
+        أخبار الذكاء الاصطناعي اليومية
+      </h1>
+      <p class="text-gray-400 text-sm sm:text-base">
+        متابعة لحظية وموثقة لأحدث الأخبار المستخلصة من كبرى الخلاصات العالمية
+      </p>
+    </div>
+
+    <!-- Category Filter -->
+    <CategoryFilter activeCategory="الكل" />
+
+    <!-- News Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+      {pageData.map((newsItem, index) => (
+        <NewsCard news={newsItem} featured={index === 0} />
+      ))}
+    </div>
+
+    <!-- Pagination Controls -->
+    {totalPages > 1 && (
+      <nav aria-label="تصفح الصفحات" class="glass-card flex items-center justify-between gap-4 px-6 py-4 rounded-2xl border border-dark-border/60">
+        <!-- Next link (visually on the left in RTL) -->
+        <div class="flex-1 flex justify-start">
+          {nextUrl ? (
+            <a
+              href={nextUrl}
+              class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-dark-card/60 text-gray-300 border border-dark-border/60 hover:text-neon-cyan hover:border-neon-cyan/40 hover:bg-neon-cyan/10 transition-all duration-200"
+            >
+              <span>&#8592;</span>
+              <span>التالي</span>
+            </a>
+          ) : (
+            <span class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 border border-dark-border/30 cursor-not-allowed select-none">
+              التالي
+            </span>
+          )}
+        </div>
+
+        <!-- Page X of Y -->
+        <div class="text-sm font-semibold text-gray-400 whitespace-nowrap">
+          الصفحة 1 من {totalPages}
+        </div>
+
+        <!-- Prev (disabled on page 1) -->
+        <div class="flex-1 flex justify-end">
+          <span class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 border border-dark-border/30 cursor-not-allowed select-none">
+            السابق
+          </span>
+        </div>
+      </nav>
+    )}
+  </div>
+</BaseLayout>
