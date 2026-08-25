@@ -1,0 +1,45 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  prevUrl?: string | null;
+  nextUrl?: string | null;
+}
+
+const { currentPage, totalPages, prevUrl = null, nextUrl = null } = Astro.props;
+
+const linkClass =
+  'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-dark-card/60 text-gray-300 border border-dark-border/60 hover:text-neon-cyan hover:border-neon-cyan/40 hover:bg-neon-cyan/10 transition-all duration-200';
+const disabledClass =
+  'px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 border border-dark-border/30 cursor-not-allowed select-none';
+---
+
+<nav aria-label="تصفح الصفحات" class="glass-card flex items-center justify-between gap-4 px-6 py-4 rounded-2xl border border-dark-border/60">
+  <!-- Next link (visually on the left in RTL) -->
+  <div class="flex-1 flex justify-start">
+    {nextUrl ? (
+      <a href={nextUrl} class={linkClass}>
+        <span aria-hidden="true">&#8592;</span>
+        <span>التالي</span>
+      </a>
+    ) : (
+      <span class={disabledClass}>التالي</span>
+    )}
+  </div>
+
+  <div class="text-sm font-semibold text-gray-400 whitespace-nowrap">
+    الصفحة {currentPage} من {totalPages}
+  </div>
+
+  <!-- Prev link (visually on the right in RTL) -->
+  <div class="flex-1 flex justify-end">
+    {prevUrl ? (
+      <a href={prevUrl} class={linkClass}>
+        <span>السابق</span>
+        <span aria-hidden="true">&#8594;</span>
+      </a>
+    ) : (
+      <span class={disabledClass}>السابق</span>
+    )}
+  </div>
+</nav>

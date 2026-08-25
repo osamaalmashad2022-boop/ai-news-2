@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { ARABIC_DATE_FORMAT, categoryBadgeStyle } from '../lib/site';
 
 interface Props {
   news: CollectionEntry<'news'>;
@@ -9,24 +10,9 @@ interface Props {
 const { news, featured = false } = Astro.props;
 const { title, summary, category, sourceName, publishedAt, image } = news.data;
 
-const formattedDate = new Intl.DateTimeFormat('ar-EG', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-}).format(new Date(publishedAt));
-
-const categoryColors: Record<string, string> = {
-  'نماذج لغوية': 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-  'توليد الصور والفيديو': 'bg-purple-500/10 text-purple-400 border-purple-500/30',
-  'الصوت': 'bg-pink-500/10 text-pink-400 border-pink-500/30',
-  'البرمجة': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-  'الأبحاث': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
-  'الأعمال والتمويل': 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-  'السياسات والأخلاقيات': 'bg-rose-500/10 text-rose-400 border-rose-500/30',
-  'أدوات وتطبيقات': 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30',
-};
-
-const badgeStyle = categoryColors[category] || 'bg-gray-500/10 text-gray-400 border-gray-500/30';
+const formattedDate = ARABIC_DATE_FORMAT.format(publishedAt);
+const isoDate = publishedAt.toISOString();
+const badgeStyle = categoryBadgeStyle(category);
 ---
 
 <article class={`glass-card overflow-hidden flex flex-col group ${featured ? 'md:col-span-2 border-neon-cyan/30' : ''}`}>
@@ -52,17 +38,19 @@ const badgeStyle = categoryColors[category] || 'bg-gray-500/10 text-gray-400 bor
 
   <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
     <div class="space-y-3">
-      {!image && (
-        <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between">
+        {!image ? (
           <a
             href={`/category/${encodeURIComponent(category)}`}
             class={`text-xs font-semibold px-3 py-1 rounded-full border ${badgeStyle}`}
           >
             {category}
           </a>
-          <span class="text-xs text-gray-400">{formattedDate}</span>
-        </div>
-      )}
+        ) : (
+          <span />
+        )}
+        <time datetime={isoDate} class="text-xs text-gray-400">{formattedDate}</time>
+      </div>
 
       <h3 class={`font-heading font-bold text-white group-hover:text-neon-cyan transition-colors leading-snug ${featured ? 'text-xl sm:text-2xl' : 'text-lg'}`}>
         <a href={`/news/${news.slug}`}>

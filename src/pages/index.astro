@@ -6,14 +6,13 @@ import NewsCard from '../components/NewsCard.astro';
 import ToolCard from '../components/ToolCard.astro';
 import CategoryFilter from '../components/CategoryFilter.astro';
 import Newsletter from '../components/Newsletter.astro';
+import { sortNewsByDate, sortToolsByDate } from '../lib/site';
 
 const allNews = await getCollection('news');
-const sortedNews = allNews.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
-const latestNews = sortedNews.slice(0, 6);
+const latestNews = sortNewsByDate(allNews).slice(0, 6);
 
 const allTools = await getCollection('tools');
-const sortedTools = allTools.sort((a, b) => b.data.addedAt.getTime() - a.data.addedAt.getTime());
-const featuredTools = sortedTools.slice(0, 3);
+const featuredTools = sortToolsByDate(allTools).slice(0, 3);
 
 // WebSite JSON-LD
 const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : '';

@@ -28,6 +28,23 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-wide;
   }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    @apply outline-none ring-2 ring-neon-cyan/60 ring-offset-2 ring-offset-dark-bg rounded-md;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 /* Custom Glassmorphism & Cyber effects */
@@ -36,7 +53,8 @@
 }
 
 .glass-card:hover {
-  @apply border-neon-cyan/40 bg-dark-card/95 shadow-neon-cyan/5 -translate-y-1;
+  @apply border-neon-cyan/40 bg-dark-card/95 -translate-y-1;
+  box-shadow: 0 12px 32px -12px rgba(6, 182, 212, 0.25), 0 0 0 1px rgba(6, 182, 212, 0.08);
 }
 
 .glass-nav {
@@ -53,6 +71,15 @@
 
 .neon-border-glow {
   box-shadow: 0 0 15px -3px rgba(6, 182, 212, 0.3);
+}
+
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
 }
 
 /* Pagefind Customization for RTL Dark Mode */
