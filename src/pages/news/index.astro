@@ -3,16 +3,14 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import CategoryFilter from '../../components/CategoryFilter.astro';
-
-const PAGE_SIZE = 18;
+import Pagination from '../../components/Pagination.astro';
+import { NEWS_PAGE_SIZE, sortNewsByDate } from '../../lib/site';
 
 const allNews = await getCollection('news');
-const sortedNews = allNews.sort(
-  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
-);
+const sortedNews = sortNewsByDate(allNews);
 
-const totalPages = Math.ceil(sortedNews.length / PAGE_SIZE);
-const pageData = sortedNews.slice(0, PAGE_SIZE);
+const totalPages = Math.ceil(sortedNews.length / NEWS_PAGE_SIZE);
+const pageData = sortedNews.slice(0, NEWS_PAGE_SIZE);
 const nextUrl = totalPages > 1 ? '/news/2' : null;
 ---
 
@@ -40,38 +38,6 @@ const nextUrl = totalPages > 1 ? '/news/2' : null;
       ))}
     </div>
 
-    <!-- Pagination Controls -->
-    {totalPages > 1 && (
-      <nav aria-label="تصفح الصفحات" class="glass-card flex items-center justify-between gap-4 px-6 py-4 rounded-2xl border border-dark-border/60">
-        <!-- Next link (visually on the left in RTL) -->
-        <div class="flex-1 flex justify-start">
-          {nextUrl ? (
-            <a
-              href={nextUrl}
-              class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-dark-card/60 text-gray-300 border border-dark-border/60 hover:text-neon-cyan hover:border-neon-cyan/40 hover:bg-neon-cyan/10 transition-all duration-200"
-            >
-              <span>&#8592;</span>
-              <span>التالي</span>
-            </a>
-          ) : (
-            <span class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 border border-dark-border/30 cursor-not-allowed select-none">
-              التالي
-            </span>
-          )}
-        </div>
-
-        <!-- Page X of Y -->
-        <div class="text-sm font-semibold text-gray-400 whitespace-nowrap">
-          الصفحة 1 من {totalPages}
-        </div>
-
-        <!-- Prev (disabled on page 1) -->
-        <div class="flex-1 flex justify-end">
-          <span class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 border border-dark-border/30 cursor-not-allowed select-none">
-            السابق
-          </span>
-        </div>
-      </nav>
-    )}
+    {totalPages > 1 && <Pagination currentPage={1} totalPages={totalPages} nextUrl={nextUrl} />}
   </div>
 </BaseLayout>

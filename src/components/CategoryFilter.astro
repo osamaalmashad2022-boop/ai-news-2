@@ -1,21 +1,13 @@
 ---
+import { CATEGORIES } from '../lib/site';
+
 interface Props {
   activeCategory?: string;
 }
 
 const { activeCategory = 'الكل' } = Astro.props;
 
-const categories = [
-  'الكل',
-  'نماذج لغوية',
-  'توليد الصور والفيديو',
-  'الصوت',
-  'البرمجة',
-  'الأبحاث',
-  'الأعمال والتمويل',
-  'السياسات والأخلاقيات',
-  'أدوات وتطبيقات'
-];
+const categories = ['الكل', ...CATEGORIES];
 ---
 
 <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar py-4">

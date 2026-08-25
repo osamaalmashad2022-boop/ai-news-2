@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { PRICING_MAP } from '../lib/site';
 
 interface Props {
   tool: CollectionEntry<'tools'>;
@@ -8,16 +9,10 @@ interface Props {
 const { tool } = Astro.props;
 const { name, description, category, url, pricing, tags, logo } = tool.data;
 
-const pricingMap = {
-  free: { label: 'مجاني 100%', style: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' },
-  freemium: { label: 'مجاني مع خيارات مدفوعة', style: 'bg-amber-500/10 text-amber-400 border-amber-500/30' },
-  paid: { label: 'مدفوع', style: 'bg-rose-500/10 text-rose-400 border-rose-500/30' },
-};
-
-const currentPricing = pricingMap[pricing];
+const currentPricing = PRICING_MAP[pricing];
 ---
 
-<div class="glass-card p-6 flex flex-col justify-between space-y-4 group">
+<article class="glass-card p-6 flex flex-col justify-between space-y-4 group">
   <div class="space-y-3">
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3">
@@ -82,4 +77,4 @@ const currentPricing = pricingMap[pricing];
       </svg>
     </a>
   </div>
-</div>
+</article>

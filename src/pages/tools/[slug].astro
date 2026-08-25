@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { PRICING_MAP } from '../../lib/site';
 
 export async function getStaticPaths() {
   const toolEntries = await getCollection('tools');
@@ -18,13 +19,7 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const { name, description, category, url, pricing, tags, logo } = entry.data;
 
-const pricingMap = {
-  free: { label: 'مجاني 100%', style: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' },
-  freemium: { label: 'مجاني مع خيارات مدفوعة', style: 'bg-amber-500/10 text-amber-400 border-amber-500/30' },
-  paid: { label: 'مدفوع', style: 'bg-rose-500/10 text-rose-400 border-rose-500/30' },
-};
-
-const currentPricing = pricingMap[pricing];
+const currentPricing = PRICING_MAP[pricing];
 ---
 
 <BaseLayout title={`${name} - دليل أدوات الذكاء الاصطناعي`} description={description}>

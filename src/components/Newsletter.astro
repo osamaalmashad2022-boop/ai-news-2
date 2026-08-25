@@ -22,18 +22,22 @@
 
     <!-- Embedded Buttondown Form (RSS to Email Compatible) -->
     <form
+      id="newsletter-form"
       action="https://buttondown.com/api/emails/embed-subscribe/ainews-arabic"
       method="post"
       target="popupwindow"
-      on-submit="window.open('https://buttondown.com/ainews-arabic', 'popupwindow')"
       class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto pt-2"
     >
+      <label for="newsletter-email" class="sr-only">البريد الإلكتروني</label>
       <input
+        id="newsletter-email"
         type="email"
         name="email"
         placeholder="أدخل بريدك الإلكتروني..."
         required
-        class="flex-grow px-5 py-3.5 rounded-xl bg-dark-surface/90 border border-dark-border text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan transition-colors text-sm"
+        autocomplete="email"
+        dir="ltr"
+        class="flex-grow px-5 py-3.5 rounded-xl bg-dark-surface/90 border border-dark-border text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/50 transition-colors text-sm text-left"
       />
       <button
         type="submit"
@@ -60,3 +64,9 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.getElementById('newsletter-form')?.addEventListener('submit', () => {
+    window.open('https://buttondown.com/ainews-arabic', 'popupwindow');
+  });
+</script>

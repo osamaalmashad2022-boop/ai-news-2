@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { sortNewsByDate } from '../../lib/site';
 
 // Build a case-insensitive name → slug map for the tools collection
 const toolsEntries = await getCollection('tools');
@@ -32,11 +33,11 @@ const formattedDate = new Intl.DateTimeFormat('ar-EG', {
   minute: '2-digit',
 }).format(new Date(publishedAt));
 
-// Related News in same category
+// Related News in same category (most recent first)
 const allNews = await getCollection('news');
-const relatedNews = allNews
-  .filter((item) => item.slug !== entry.slug && item.data.category === category)
-  .slice(0, 3);
+const relatedNews = sortNewsByDate(
+  allNews.filter((item) => item.slug !== entry.slug && item.data.category === category)
+).slice(0, 3);
 
 // NewsArticle JSON-LD
 const canonicalArticleURL = new URL(Astro.url.pathname, Astro.site);
